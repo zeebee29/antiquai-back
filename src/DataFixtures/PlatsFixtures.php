@@ -2,19 +2,18 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Categories;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\Plats;
-use App\Repository\CategoriesRepository;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class PlatsFixtures extends Fixture
+class PlatsFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
         // Récupération des références à la fixture Category
         $catAperitif    = $this->getReference('category_aperitif');
-        $catEntree     = $this->getReference('category_entree');
+        $catEntree      = $this->getReference('category_entree');
         $catPlat        = $this->getReference('category_plat');
         $catDessert     = $this->getReference('category_dessert');
         $catAlcool      = $this->getReference('category_alcool');
@@ -203,13 +202,41 @@ class PlatsFixtures extends Fixture
         $plat22->setCategory($catSsAlcool);
         $manager->persist($plat22);
 
+        $plat23 = new Plats();
+        $plat23->setName('Tarte de légumes printaniers d’harald hermans, sabayon au curry');
+        $plat23->setDescription('');
+        $plat23->setPrice(0.00);
+        $plat23->setInCarte(false);
+        $plat23->setCategory($catEntree);
+        $manager->persist($plat23);
+
+        $plat24 = new Plats();
+        $plat24->setName('Rôti de bœuf, polenta à l’ail des ours, chou-pointu grillé, condiment raifort');
+        $plat24->setDescription('');
+        $plat24->setPrice(0.00);
+        $plat24->setInCarte(false);
+        $plat24->setCategory($catPlat);
+        $manager->persist($plat24);
+
+        $plat25 = new Plats();
+        $plat25->setName('Déclinaison, chocolat et kiwi');
+        $plat25->setDescription('');
+        $plat25->setPrice(0.00);
+        $plat25->setInCarte(false);
+        $plat25->setCategory($catDessert);
+        $manager->persist($plat25);
+
         $manager->flush();
+
+        $this->addReference('entree_menu', $plat23);
+        $this->setReference('plat_menu', $plat24);
+        $this->setReference('dessert_menu', $plat25);
     }
 
     public function getDependencies()
     {
         return [
-            CategoryFixtures::class,
+            CategoriesFixtures::class,
         ];
     }
 }
