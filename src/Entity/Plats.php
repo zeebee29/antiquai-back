@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PlatsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -29,6 +31,14 @@ class Plats
     #[ORM\ManyToOne(targetEntity: Categories::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Categories $category = null;
+
+    #[ORM\ManyToMany(targetEntity: Menus::class, mappedBy: 'plats')]
+    private Collection $menus;
+
+    public function __construct()
+    {
+        $this->menus = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -91,6 +101,33 @@ class Plats
     public function setCategory(Categories $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Menus>
+     */
+    public function getMenus(): Collection
+    {
+        return $this->menus;
+    }
+
+    public function addMenu(Menus $menu): self
+    {
+        if (!$this->menus->contains($menu)) {
+            $this->menus->add($menu);
+            $menu->addPlat($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMenu(Menus $menu): self
+    {
+        if ($this->menus->removeElement($menu)) {
+            $menu->removePlat($this);
+        }
 
         return $this;
     }
