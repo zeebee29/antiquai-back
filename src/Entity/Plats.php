@@ -28,7 +28,7 @@ class Plats
     #[ORM\Column]
     private ?bool $inCarte = null;
 
-    #[ORM\ManyToOne(targetEntity: Categories::class, cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(targetEntity: Categories::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Categories $category = null;
 
