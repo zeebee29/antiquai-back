@@ -42,7 +42,7 @@ class PlatsRepository extends ServiceEntityRepository
     public function findPlatsforCarte(): array
     {
         return $this->createQueryBuilder('p')
-            ->select('c.name AS categorie', 'p.name', 'p.description', 'p.price')
+            ->select('c.nameForCarte AS categorie', 'p.name', 'p.description', 'p.price')
             ->join('p.category', 'c')
             ->where('p.inCarte = true')
             ->orderBy('c.name', 'ASC')

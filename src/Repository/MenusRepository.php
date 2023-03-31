@@ -39,28 +39,46 @@ class MenusRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Menus[] Returns an array of Menus objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('m.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findPlatsByMenus(): array
+    {
+        return $this->createQueryBuilder('m')
+            ->select('m.name AS menuType', 'm.price', 'c.nameForMenu As cat', 'p.name AS plat')
+            ->join('m.plats', 'p')
+            ->join('p.category', 'c')
+            ->orderBy('m.id', 'ASC')
+            ->getQuery()
+            ->getArrayResult();
+        /*            ->select('p.name AS plat', 'c.name AS categorie', 'm.name', 'm.description', 'm.price')
+            ->join('m.plats', 'p')
+            ->join('p.category', 'c')
+            ->orderBy('m.id', 'ASC')
+            ->getQuery()
+            ->getArrayResult();
+    */
+    }
 
-//    public function findOneBySomeField($value): ?Menus
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    /**
+    //     * @return Menus[] Returns an array of Menus objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('m')
+    //            ->andWhere('m.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('m.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?Menus
+    //    {
+    //        return $this->createQueryBuilder('m')
+    //            ->andWhere('m.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

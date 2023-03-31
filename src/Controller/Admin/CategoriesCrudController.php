@@ -20,6 +20,8 @@ class CategoriesCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm()->hideOnIndex(),
             TextField::new('name', 'Nom'),
+            TextField::new('nameForMenu', 'Titre pour Menus'),
+            TextField::new('nameForCarte', 'Titre pour carte'),
         ];
     }
 }

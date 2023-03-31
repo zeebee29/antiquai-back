@@ -17,7 +17,7 @@ class MenusFixtures extends Fixture implements DependentFixtureInterface
 
         /*** Menu Entrée + PLat ***/
         $menu1 = new Menus();
-        $menu1->setName('Menu Déjeuner (Entréee + Plat)');
+        $menu1->setName('Menu Déjeuner (Entrée + Plat)');
         $menu1->setPrice(20.00);
         $menu1->addPlat($entree);
         $menu1->addPlat($plat);

@@ -21,6 +21,12 @@ class Categories
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Plats::class)]
     private ?Collection $plats = null;
 
+    #[ORM\Column(length: 50)]
+    private ?string $nameForMenu = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $nameForCarte = null;
+
     public function __construct()
     {
         $this->plats = new ArrayCollection();
@@ -73,5 +79,29 @@ class Categories
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function getNameForMenu(): ?string
+    {
+        return $this->nameForMenu;
+    }
+
+    public function setNameForMenu(string $nameForMenu): self
+    {
+        $this->nameForMenu = $nameForMenu;
+
+        return $this;
+    }
+
+    public function getNameForCarte(): ?string
+    {
+        return $this->nameForCarte;
+    }
+
+    public function setNameForCarte(string $nameForCarte): self
+    {
+        $this->nameForCarte = $nameForCarte;
+
+        return $this;
     }
 }
