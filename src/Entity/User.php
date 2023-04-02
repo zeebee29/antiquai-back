@@ -4,10 +4,14 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\component\Validator\Constraints as Assert;
 
+#[UniqueEntity('email')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\EntityListeners(['App\EntityListener\UserListener'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -16,16 +20,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Assert\Email()]
+    #[Assert\Length(min: 2, max: 180)]
     private ?string $email = null;
 
     #[ORM\Column]
+    #[Assert\NotNull()]
     private array $roles = [];
 
+    private ?string $plainPassword = null;
     /**
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\NotBlank()]
     private ?string $password = null;
+
+    #[ORM\Column(length: 50)]
+    #[Assert\NotBlank()]
+    #[Assert\Length(min: 2, max: 50)]
+    private ?string $lastName = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    #[Assert\Length(min: 2, max: 50)]
+    private ?string $firstname = null;
+
+    #[ORM\Column(length: 20)]
+    #[Assert\NotBlank()]
+    #[Assert\Length(min: 2, max: 20)]
+    private ?string $tel = null;
 
     public function getId(): ?int
     {
@@ -74,6 +97,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
+     * Get the value of plainPassword
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * Set the value of plainPassword
+     *
+     * @return  self
+     */
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    /**
      * @see PasswordAuthenticatedUserInterface
      */
     public function getPassword(): string
@@ -95,5 +138,41 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setName(string $lastName): self
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(?string $firstname): self
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getTel(): ?string
+    {
+        return $this->tel;
+    }
+
+    public function setTel(string $tel): self
+    {
+        $this->tel = $tel;
+
+        return $this;
     }
 }
