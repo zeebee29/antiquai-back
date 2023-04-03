@@ -19,6 +19,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 50)]
+    #[Assert\NotBlank()]
+    #[Assert\Length(min: 2, max: 50)]
+    private ?string $lastName = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    #[Assert\Length(min: 2, max: 50)]
+    private ?string $firstname = null;
+
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\Email()]
     #[Assert\Length(min: 2, max: 180)]
@@ -34,20 +43,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     #[Assert\NotBlank()]
-    private ?string $password = null;
+    private ?string $password = 'password';
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 12)]
     #[Assert\NotBlank()]
-    #[Assert\Length(min: 2, max: 50)]
-    private ?string $lastName = null;
-
-    #[ORM\Column(length: 50, nullable: true)]
-    #[Assert\Length(min: 2, max: 50)]
-    private ?string $firstname = null;
-
-    #[ORM\Column(length: 20)]
-    #[Assert\NotBlank()]
-    #[Assert\Length(min: 2, max: 20)]
+    #[Assert\Length(min: 10, max: 12)]
     private ?string $tel = null;
 
     public function getId(): ?int
@@ -145,7 +145,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->lastName;
     }
 
-    public function setName(string $lastName): self
+    public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
 
